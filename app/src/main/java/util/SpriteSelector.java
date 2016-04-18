@@ -1,6 +1,7 @@
 package util;
 
-import com.lfk.justweengine.Engine.Engine;
+import android.content.Context;
+
 import com.lfk.justweengine.Engine.GameTexture;
 
 /**
@@ -21,7 +22,7 @@ public class SpriteSelector {
 //    private GameTexture ReSharper;
 //    private GameTexture CLion;
 
-    public SpriteSelector(Engine engine) {
+    public SpriteSelector(Context engine) {
         PyCharm = new GameTexture(engine);
         IntelliJ_IDEA = new GameTexture(engine);
         RubyMine = new GameTexture(engine);

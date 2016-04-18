@@ -7,6 +7,7 @@ import android.os.Parcelable;
 
 import com.lfk.justweengine.Utils.logger.LogCat;
 import com.lfk.justweengine.Utils.logger.LogLevel;
+import com.lfk.justweengine.Utils.logger.Options;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -95,7 +96,7 @@ public class LogHandler {
 
     private void getLogger() {
         Process process = LogCat.getInstance()
-                .options(LogLevel.INFO)
+                .options(Options.DUMP)
                 .withTime()
                 .recentLines(1000)
                 .filter("", LogLevel.VERBOSE)

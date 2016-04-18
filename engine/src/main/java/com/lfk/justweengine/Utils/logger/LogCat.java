@@ -1,7 +1,6 @@
 package com.lfk.justweengine.Utils.logger;
 
 import android.text.TextUtils;
-import android.graphics.BitmapFactory.Options;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class LogCat {
         commandLine = new ArrayList<>(DEFAULT_COMMAND);
     }
 
-    public LogCat options(LogLevel options) {
+    public LogCat options(Options options) {
         commandLine.add(LogParser.parse(options));
         return this;
     }

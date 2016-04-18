@@ -1,17 +1,16 @@
 package com.ice1000.asgame;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.MotionEvent;
 
 import com.lfk.justweengine.Anim.VelocityAnimation;
+import com.lfk.justweengine.Drawable.Sprite.BaseSprite;
+import com.lfk.justweengine.Drawable.Sprite.BaseSub;
 import com.lfk.justweengine.Engine.Engine;
 import com.lfk.justweengine.Engine.GameTextPrinter;
 import com.lfk.justweengine.Engine.GameTexture;
 import com.lfk.justweengine.Engine.GameTimer;
 import com.lfk.justweengine.Info.UIdefaultData;
-import com.lfk.justweengine.Drawable.Sprite.BaseSprite;
-import com.lfk.justweengine.Drawable.Sprite.BaseSub;
 import com.lfk.justweengine.Utils.tools.SpUtils;
 
 import java.util.Random;
@@ -41,7 +40,6 @@ public class Game extends Engine {
     public Game() {
         super(false);
 //        shouldPrintInfo = false;
-        selector = new SpriteSelector(this);
         fire = new GameTimer();
         enemy = new GameTimer();
         random = new Random();
@@ -50,6 +48,7 @@ public class Game extends Engine {
     @Override
     public void init() {
         super.setScreenOrientation(ScreenMode.PORTRAIT);
+        selector = new SpriteSelector(this);
         UIdefaultData.init(this);
         setBackgroundColor(Color.BLACK);
         isDied = false;

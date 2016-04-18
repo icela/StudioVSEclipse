@@ -1,7 +1,5 @@
 package com.lfk.justweengine.Utils.logger;
 
-import android.graphics.BitmapFactory;
-
 /**
  * @author Kale
  * @date 2016/3/25
@@ -40,26 +38,26 @@ public class LogParser {
 
     private static final String ASSERT = "S"; //    Silent(Super all output) (最高的优先级, 前所未有的错误); 
 
-//    public static String parse(LogLevel options) {
-//        switch (options) {
-//            case SILENT:
-//                return SILENT;
-//            case FILE:
-//                return FILE;
-//            case BYTES:
-//                return BYTES;
-//            case COUNT:
-//                return COUNT;
-//            case FORMAT:
-//                return FORMAT;
-//            case CLEAR:
-//                return CLEAR;
-//            case DUMP:
-//                //return DUMP;
-//            default:
-//                return DUMP;
-//        }
-//    }
+    public static String parse(Options options) {
+        switch (options) {
+            case SILENT:
+                return SILENT;
+            case FILE:
+                return FILE;
+            case BYTES:
+                return BYTES;
+            case COUNT:
+                return COUNT;
+            case FORMAT:
+                return FORMAT;
+            case CLEAR:
+                return CLEAR;
+            case DUMP:
+                //return DUMP;
+            default:
+                return DUMP;
+        }
+    }
 
     public static String parse(LogLevel level) {
         switch (level) {
