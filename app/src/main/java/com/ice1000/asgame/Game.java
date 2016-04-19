@@ -94,15 +94,15 @@ public class Game extends Engine {
         GameTextPrinter printer = new GameTextPrinter(getCanvas());
         printer.setTextSize(textSize);
         printer.setTextColor(Color.WHITE);
-        int column = 1;
+        int column = 0;
         printer.drawText("By 千里冰封 & JustWeEngine",
-                textFromLeft, textSize * column++);
-        printer.drawText("score : " + score, textFromLeft, textSize * column++);
-        printer.drawText("best:  " + best, textFromLeft, textSize * column++);
-        printer.drawText("level : " + level, textFromLeft, textSize * column++);
+                textFromLeft, textSize * ++column);
+        printer.drawText("score : " + score, textFromLeft, textSize * ++column);
+        printer.drawText("best:  " + best, textFromLeft, textSize * ++column);
+        printer.drawText("level : " + level, textFromLeft, textSize * ++column);
         printer.drawText(
                 isDied ? "You die!" : ("life : " + life),
-                textFromLeft, textSize * column);
+                textFromLeft, textSize * ++column);
     }
 
     @Override
