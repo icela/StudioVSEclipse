@@ -30,24 +30,25 @@ public class Game extends Engine {
     private static final int ECBullet = 0x003;
     private static final int FIRE = 80;
     private static final int bulletSize = 20;
+    private static final long ENEMY_FIRE = 600;
     private static final String START = "START";
     private static final String AS_SPRITE = "ASSprite";
     private static final String BEST = "BEST";
     private static final String RESTART = "RESTART";
-    private static int ENEMY = 400;
+    private static long ENEMY = 400;
     private int score, level, best, textSize, textFromLeft, life;
     private SpriteSelector selector;
     private ASSprite asSprite;
-    private GameTimer fire, enemy;
+    private GameTimer fire, enemy, enemyFire;
     private Random random;
     private TextButton restartButton;
     private boolean isDied = false;
 
     public Game() {
         super(false);
-//        shouldPrintInfo = false;
         fire = new GameTimer();
         enemy = new GameTimer();
+        enemyFire = new GameTimer();
         random = new Random();
     }
 
@@ -103,12 +104,16 @@ public class Game extends Engine {
     public void update() {
         if (asSprite.getFixedAnimation(START).animating)
             asSprite.fixedAnimation(START);
-        addEnemy();
+        if (enemy.stopWatch(ENEMY))
+            addEnemy();
+        if (enemyFire.stopWatch(ENEMY_FIRE))
+            addEnemyFire();
         if (isDied) {
             setTouchMode(TouchMode.BUTTON);
         } else {
             setTouchMode(TouchMode.SINGLE);
-            fire();
+            if (fire.stopWatch(FIRE))
+                fire();
         }
     }
 
@@ -174,30 +179,45 @@ public class Game extends Engine {
         life = 5;
     }
 
+    /**
+     * actually an extension of getEnemy()
+     *
+     * @param texture the texture
+     * @return the enemy bullet
+     * @see Game
+     */
+    private BaseSprite getEnemyBullet(GameTexture texture) {
+        BaseSprite bullet = getEnemy(texture);
+        bullet.setIdentifier(ECBullet);
+        bullet.setDipScale(10, 10);
+        bullet.clearAllAnimation();
+        bullet.addAnimation(new VelocityAnimation(
+                90, 5, 10000));
+        return bullet;
+    }
+
     private void fire() {
-        if (!fire.stopWatch(FIRE))
-            return;
         float x = asSprite.getPosition().x +
                 asSprite.getWidthWithScale() / 2 - bulletSize / 2;
         float y = asSprite.getPosition().y - 50;
         switch (level) {
             // no break!!!
+            default:
             case 3:
                 addToSpriteGroup(getBullet(
                         x + 50, y, selector.RM()));
             case 2:
                 addToSpriteGroup(getBullet(
                         x - 50, y, selector.PC()));
-            default:
+            case 1:
                 addToSpriteGroup(getBullet(
                         x, y, selector.IJ()));
         }
     }
 
     private void addEnemy() {
-        if (!enemy.stopWatch(ENEMY))
-            return;
         switch (level) {
+            // no break!!!
             default:
             case 4:
                 addToSpriteGroup(getEnemy(selector.EC3()));
@@ -207,6 +227,21 @@ public class Game extends Engine {
                 addToSpriteGroup(getEnemy(selector.EC1()));
             case 1:
                 addToSpriteGroup(getEnemy(selector.EC()));
+        }
+    }
+
+    private void addEnemyFire() {
+        switch (level) {
+            // no break!!!
+            default:
+            case 4:
+                addToSpriteGroup(getEnemyBullet(
+                        selector.EC()));
+            case 3:
+                addToSpriteGroup(getEnemyBullet(
+                        selector.EC3()));
+            case 2:
+            case 1:
         }
     }
 
@@ -268,8 +303,7 @@ public class Game extends Engine {
      * @return a bullet instance
      */
     private BaseSprite getBullet(float x, float y, GameTexture texture) {
-        BaseSprite bullet;
-        bullet = new BaseSprite(this);
+        BaseSprite bullet = new BaseSprite(this);
         bullet.setTexture(texture);
         bullet.setIdentifier(ASBullet);
         bullet.setDipScale(bulletSize, bulletSize);
