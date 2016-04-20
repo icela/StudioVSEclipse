@@ -73,6 +73,8 @@ public class TextButton extends BaseButton {
         if (b_width == 0 || b_height == 0) {
             float[] widths = new float[1];
             // 获取单个汉字的宽度
+            // 冰封的留言：
+            // 学长你真会玩              ⬇
             b_textPaint.getTextWidths("蛤", widths);
             b_text = b_text != null ? b_text : "";
             b_textWidth = widths[0] * b_text.length();

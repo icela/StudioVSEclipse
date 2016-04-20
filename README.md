@@ -1,5 +1,5 @@
 # StudioVSEclipse
-Android Studio大战Eclipse 打飞机游戏 :joy:
+Android Studio 大战 Eclipse 打飞机游戏 :joy:
 
 ##### Powered by [JustWeEngine](https://github.com/lfkdsk/JustWeEngine)
 ## 鸣谢
