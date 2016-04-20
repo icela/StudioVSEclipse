@@ -141,17 +141,8 @@ public class Game extends Engine {
                     addToRecycleGroup(baseSub.getOffender());
                     score++;
                     if (ENEMY > 100) ENEMY--;
-                    switch (score) {
-                        case 60:
-                            level++;
-                            break;
-                        case 150:
-                            level++;
-                            break;
-                        case 250:
-                            level++;
-                            break;
-                    }
+                    if(score % 80 == 0 && score > 0)
+                        level++;
                 }
                 break;
             case EC:
@@ -184,7 +175,7 @@ public class Game extends Engine {
      *
      * @param texture the texture
      * @return the enemy bullet
-     * @see Game
+     * @see #getEnemy(GameTexture)
      */
     private BaseSprite getEnemyBullet(GameTexture texture) {
         BaseSprite bullet = getEnemy(texture);
@@ -234,12 +225,14 @@ public class Game extends Engine {
         switch (level) {
             // no break!!!
             default:
-            case 4:
+            case 6:
                 addToSpriteGroup(getEnemyBullet(
                         selector.EC()));
-            case 3:
+            case 5:
                 addToSpriteGroup(getEnemyBullet(
                         selector.EC3()));
+            case 4:
+            case 3:
             case 2:
             case 1:
         }
