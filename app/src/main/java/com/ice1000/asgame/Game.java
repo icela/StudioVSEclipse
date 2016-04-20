@@ -107,7 +107,7 @@ public class Game extends Engine {
         if (enemy.stopWatch(ENEMY))
             addEnemy();
         if (enemyFire.stopWatch(ENEMY_FIRE))
-            addEnemyFire();
+            addEnemyFire(90);
         if (isDied) {
             setTouchMode(TouchMode.BUTTON);
         } else {
@@ -141,8 +141,13 @@ public class Game extends Engine {
                     addToRecycleGroup(baseSub.getOffender());
                     score++;
                     if (ENEMY > 100) ENEMY--;
-                    if(score % 80 == 0 && score > 0)
+                    if (score % 80 == 0 && score > 0)
                         level++;
+                    // 死后天女散花
+                    if(level > 5){
+                        for (int i = 0; i < 360; i += 60 / (level - 5))
+                            addEnemyFire(i);
+                    }
                 }
                 break;
             case EC:
@@ -174,16 +179,17 @@ public class Game extends Engine {
      * actually an extension of getEnemy()
      *
      * @param texture the texture
+     * @param dir direction
      * @return the enemy bullet
      * @see #getEnemy(GameTexture)
      */
-    private BaseSprite getEnemyBullet(GameTexture texture) {
+    private BaseSprite getEnemyBullet(GameTexture texture, double dir) {
         BaseSprite bullet = getEnemy(texture);
         bullet.setIdentifier(ECBullet);
         bullet.setDipScale(10, 10);
         bullet.clearAllAnimation();
         bullet.addAnimation(new VelocityAnimation(
-                90, 5, 10000));
+                dir, 5, 10000));
         return bullet;
     }
 
@@ -221,16 +227,16 @@ public class Game extends Engine {
         }
     }
 
-    private void addEnemyFire() {
+    private void addEnemyFire(double dir) {
         switch (level) {
             // no break!!!
             default:
             case 6:
                 addToSpriteGroup(getEnemyBullet(
-                        selector.EC()));
+                        selector.EC(), dir));
             case 5:
                 addToSpriteGroup(getEnemyBullet(
-                        selector.EC3()));
+                        selector.EC3(), dir));
             case 4:
             case 3:
             case 2:
