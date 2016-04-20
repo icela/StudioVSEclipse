@@ -150,16 +150,19 @@ public class Game extends Engine {
                     }
                 }
                 break;
+            // 敌方子弹不会被你的子弹打掉
             case EC:
+            case ECBullet:
                 if (baseSub.getOffender().getIdentifier() == AS) {
-                    if (score > best) {
-                        SpUtils.put(this, BEST, score);
-                        best = score;
-                    }
-                    life--;
-                    baseSub.setAlive(false);
-                    if (life == 0)
-                        isDied = true;
+                        if (score > best) {
+                                SpUtils.put(this, BEST, score);
+                                best = score;
+                        }
+                        life--;
+                        baseSub.setAlive(false);
+                        if (life == 0) {
+                                isDied = true;
+                        }
                 }
                 break;
         }
@@ -186,7 +189,7 @@ public class Game extends Engine {
     private BaseSprite getEnemyBullet(GameTexture texture, double dir) {
         BaseSprite bullet = getEnemy(texture);
         bullet.setIdentifier(ECBullet);
-        bullet.setDipScale(10, 10);
+        bullet.setDipScale(8, 8);
         bullet.clearAllAnimation();
         bullet.addAnimation(new VelocityAnimation(
                 dir, 5, 10000));
