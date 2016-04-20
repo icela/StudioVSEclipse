@@ -10,15 +10,10 @@ import com.lfk.justweengine.Engine.GameTexture;
  */
 public class SpriteSelector {
 
-    private static final String FILENAME = "pic/new.jpg";
-    private GameTexture IntelliJ_IDEA;
-    private GameTexture Android_Studio;
-    private GameTexture PyCharm;
-    private GameTexture RubyMine;
-    private GameTexture Eclipse;
-    private GameTexture Eclipse1;
-    private GameTexture Eclipse2;
-    private GameTexture Eclipse3;
+//    private static final String FILENAME = "pic/new.jpg";
+    private GameTexture IntelliJ_IDEA,
+            Android_Studio, PyCharm, RubyMine,
+            Eclipse, Eclipse1, Eclipse2, Eclipse3;
 //    private GameTexture ReSharper;
 //    private GameTexture CLion;
 
@@ -38,7 +33,7 @@ public class SpriteSelector {
     // IJ : x: 0 - 160, y: 0 - 150
     // R# : x: 0 - 160, y: 450 - 600
     // CL : x: 0 - 160, y: 300 - 450
-    public void load(){
+    public void load() {
 //        IntelliJ_IDEA.loadFromAssetStripFrame(FILENAME, 0, 0, 160, 150);
 //        ReSharper.loadFromAssetStripFrame(FILENAME, 0, 450, 160, 600);
 //        CLion.loadFromAssetStripFrame(FILENAME, 0, 300, 160, 450);
@@ -52,14 +47,37 @@ public class SpriteSelector {
         Eclipse3.loadFromAsset("pic/ec3.png");
     }
 
-    public GameTexture IJ (){return IntelliJ_IDEA;}
-    public GameTexture PC (){return PyCharm;}
-    public GameTexture RM (){return RubyMine;}
-    public GameTexture AS (){return Android_Studio;}
-    public GameTexture EC (){return Eclipse;}
-    public GameTexture EC1(){return Eclipse1;}
-    public GameTexture EC2(){return Eclipse2;}
-    public GameTexture EC3(){return Eclipse3;}
+    public GameTexture IJ() {
+        return IntelliJ_IDEA;
+    }
+
+    public GameTexture PC() {
+        return PyCharm;
+    }
+
+    public GameTexture RM() {
+        return RubyMine;
+    }
+
+    public GameTexture AS() {
+        return Android_Studio;
+    }
+
+    public GameTexture EC() {
+        return Eclipse;
+    }
+
+    public GameTexture EC1() {
+        return Eclipse1;
+    }
+
+    public GameTexture EC2() {
+        return Eclipse2;
+    }
+
+    public GameTexture EC3() {
+        return Eclipse3;
+    }
 
 }
 //    Random random = new Random();

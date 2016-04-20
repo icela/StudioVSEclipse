@@ -13,6 +13,7 @@ import com.lfk.justweengine.Engine.Engine;
 import com.lfk.justweengine.Engine.GameTextPrinter;
 import com.lfk.justweengine.Engine.GameTexture;
 import com.lfk.justweengine.Engine.GameTimer;
+import com.lfk.justweengine.Engine.TouchMode;
 import com.lfk.justweengine.Info.UIdefaultData;
 import com.lfk.justweengine.Utils.tools.SpUtils;
 
@@ -24,8 +25,9 @@ import util.SpriteSelector;
 public class Game extends Engine {
 
     private static final int AS = 0x000;
-    private static final int IJ = 0x001;
-    private static final int ECLIPSE = 0x002;
+    private static final int ASBullet = 0x001;
+    private static final int EC = 0x002;
+    private static final int ECBullet = 0x003;
     private static final int FIRE = 80;
     private static final int bulletSize = 20;
     private static final String START = "START";
@@ -36,8 +38,7 @@ public class Game extends Engine {
     private int score, level, best, textSize, textFromLeft, life;
     private SpriteSelector selector;
     private ASSprite asSprite;
-    private GameTimer fire;
-    private GameTimer enemy;
+    private GameTimer fire, enemy;
     private Random random;
     private TextButton restartButton;
     private boolean isDied = false;
@@ -100,13 +101,14 @@ public class Game extends Engine {
 
     @Override
     public void update() {
-        if (asSprite.getFixedAnimation(START).animating) {
+        if (asSprite.getFixedAnimation(START).animating)
             asSprite.fixedAnimation(START);
-        } else if (isDied) {
-            addEnemy();
+        addEnemy();
+        if (isDied) {
+            setTouchMode(TouchMode.BUTTON);
         } else {
+            setTouchMode(TouchMode.SINGLE);
             fire();
-            addEnemy();
         }
     }
 
@@ -126,8 +128,8 @@ public class Game extends Engine {
     @Override
     public void collision(BaseSub baseSub) {
         switch (baseSub.getIdentifier()) {
-            case IJ:
-                if (baseSub.getOffender().getIdentifier() == ECLIPSE) {
+            case ASBullet:
+                if (baseSub.getOffender().getIdentifier() == EC) {
                     baseSub.getOffender().setAlive(false);
                     baseSub.setAlive(false);
                     removeFromSpriteGroup(baseSub.getOffender());
@@ -147,7 +149,7 @@ public class Game extends Engine {
                     }
                 }
                 break;
-            case ECLIPSE:
+            case EC:
                 if (baseSub.getOffender().getIdentifier() == AS) {
                     if (score > best) {
                         SpUtils.put(this, BEST, score);
@@ -162,6 +164,9 @@ public class Game extends Engine {
         }
     }
 
+    /**
+     * init data. Used in init and restart
+     */
     private void initData() {
         isDied = false;
         score = 0;
@@ -205,11 +210,17 @@ public class Game extends Engine {
         }
     }
 
+    /**
+     * get enemy by texture
+     *
+     * @param texture the texture
+     * @return an enemy
+     */
     private BaseSprite getEnemy(GameTexture texture) {
         BaseSprite enemy;
         enemy = new BaseSprite(this);
         enemy.setTexture(texture);
-        enemy.setIdentifier(ECLIPSE);
+        enemy.setIdentifier(EC);
 //        enemy.setDipScale(80, 80);
         enemy.addAnimation(new VelocityAnimation(
                 90, 30, 5000
@@ -222,8 +233,12 @@ public class Game extends Engine {
         return enemy;
     }
 
+    /**
+     * width: 200
+     * height: 40
+     */
     private void initButton() {
-        int w = 200, h = 20;
+        int w = 200, h = 40;
         restartButton = new TextButton(this, w, h, "restart");
         restartButton.setTextColor(Color.WHITE);
         restartButton.setZoomCenter(true);
@@ -256,7 +271,7 @@ public class Game extends Engine {
         BaseSprite bullet;
         bullet = new BaseSprite(this);
         bullet.setTexture(texture);
-        bullet.setIdentifier(IJ);
+        bullet.setIdentifier(ASBullet);
         bullet.setDipScale(bulletSize, bulletSize);
         bullet.addAnimation(new VelocityAnimation(
                 270, 20, 2500));
