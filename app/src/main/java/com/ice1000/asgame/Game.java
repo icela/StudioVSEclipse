@@ -54,8 +54,8 @@ public class Game extends Engine {
     private Random random;
     private TextButton restartButton;
     private boolean
-            isDied = false,
-            isButtonShown = false;
+            isDied,
+            isButtonShown;
 
     public Game() {
         super(false);
@@ -193,6 +193,7 @@ public class Game extends Engine {
      * init data. Used in init and restart
      */
     private void initData() {
+        isButtonShown = false;
         isDied = false;
         score = 0;
         level = 1;
@@ -227,7 +228,8 @@ public class Game extends Engine {
      * @return created dying attack
      * @see #getEnemyBullet(GameTexture, double)
      */
-    private BaseSprite getEnemyDyingAttack(int x, int y, GameTexture dir, int texture) {
+    private BaseSprite getEnemyDyingAttack(
+            int x, int y, GameTexture dir, int texture) {
         BaseSprite sprite = getEnemyBullet(dir, texture);
         sprite.setPosition(x, y);
         return sprite;
@@ -329,7 +331,6 @@ public class Game extends Engine {
             public void onClick() {
                 initData();
                 removeButtonFromGroup(RESTART);
-                isButtonShown = false;
             }
         });
         restartButton.setPosition(
