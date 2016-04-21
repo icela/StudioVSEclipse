@@ -13,6 +13,13 @@ import android.util.Log;
  */
 public class UIdefaultData {
 
+    public static final int sprite_default_color_paint = Color.WHITE;
+    public static int screenWidth;
+    public static int screenHeight;
+    public static int centerInHorizontalX;
+    public static float scale;
+    public static Point center;
+    public static float defaultMusicVolume = 10;
     private static Context context;
 
     public static void init(Context context) {
@@ -24,18 +31,4 @@ public class UIdefaultData {
         centerInHorizontalX = screenWidth / 2;
         Log.e("h" + screenHeight, "w" + screenWidth);
     }
-
-    public static final int sprite_default_color_paint = Color.WHITE;
-
-    public static int screenWidth;
-
-    public static int screenHeight;
-
-    public static int centerInHorizontalX;
-
-    public static float scale;
-
-    public static Point center;
-
-    public static float defaultMusicVolume = 10;
 }

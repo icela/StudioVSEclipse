@@ -11,8 +11,8 @@ import android.graphics.Paint;
  */
 public class GameTextPrinter {
     protected Canvas e_canvas;
-    private Paint e_paint;
     protected float e_x, e_y;
+    private Paint e_paint;
     private float e_spaceing;
     private String text;
 

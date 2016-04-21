@@ -12,21 +12,15 @@ import java.util.List;
  */
 public class ObjectPool<T> {
 
+    private final List<T> freeObjects;
+    private final publicObjectFactory<T> factory;
+    private final int maxSize;
+
     public ObjectPool(publicObjectFactory<T> factory, int maxSize) {
         this.freeObjects = new ArrayList<>(maxSize);
         this.factory = factory;
         this.maxSize = maxSize;
     }
-
-    public interface publicObjectFactory<T> {
-        T createObject();
-    }
-
-    private final List<T> freeObjects;
-
-    private final publicObjectFactory<T> factory;
-
-    private final int maxSize;
 
     /**
      * 新建对象
@@ -57,6 +51,10 @@ public class ObjectPool<T> {
      */
     public void clear() {
         freeObjects.clear();
+    }
+
+    public interface publicObjectFactory<T> {
+        T createObject();
     }
 
 }

@@ -52,11 +52,6 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
     private int e_touchNum;
     private int e_backgroundColor;
     private boolean e_isFrameOpen;
-
-    public TouchMode getTouchMode() {
-        return e_touch_Mode;
-    }
-
     //    private boolean isOpenDebug = false;
     private TouchMode e_touch_Mode;
     private CopyOnWriteArrayList<BaseSub> e_sprite_group;
@@ -84,6 +79,14 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
             Logger.init();
         }
         Engine();
+    }
+
+    public TouchMode getTouchMode() {
+        return e_touch_Mode;
+    }
+
+    public void setTouchMode(TouchMode e_touch_Mode) {
+        this.e_touch_Mode = e_touch_Mode;
     }
 
     private void Engine() {
@@ -417,16 +420,6 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
         this.e_touchModesAble = e_touchModesAble;
     }
 
-    public enum ScreenMode {
-        LANDSCAPE(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE),
-        PORTRAIT(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        int value;
-
-        ScreenMode(int mode) {
-            this.value = mode;
-        }
-    }
-
     /**
      * set screenOrientation
      *
@@ -544,18 +537,6 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
 
     public void setTextSize(float size) {
         e_paintFont.setTextSize((int) size);
-    }
-
-    public enum FontStyles {
-        NORMAL(Typeface.NORMAL),
-        BOLD(Typeface.BOLD),
-        ITALIC(Typeface.ITALIC),
-        BOLD_ITALIC(Typeface.BOLD_ITALIC),;
-        int value;
-
-        FontStyles(int value) {
-            this.value = value;
-        }
     }
 
     /**
@@ -768,7 +749,25 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
         e_hit_button = null;
     }
 
-    public void setTouchMode(TouchMode e_touch_Mode) {
-        this.e_touch_Mode = e_touch_Mode;
+    public enum ScreenMode {
+        LANDSCAPE(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE),
+        PORTRAIT(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        int value;
+
+        ScreenMode(int mode) {
+            this.value = mode;
+        }
+    }
+
+    public enum FontStyles {
+        NORMAL(Typeface.NORMAL),
+        BOLD(Typeface.BOLD),
+        ITALIC(Typeface.ITALIC),
+        BOLD_ITALIC(Typeface.BOLD_ITALIC),;
+        int value;
+
+        FontStyles(int value) {
+            this.value = value;
+        }
     }
 }
