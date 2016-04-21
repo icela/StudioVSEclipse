@@ -229,7 +229,7 @@ public class Game extends Engine {
      */
     private BaseSprite getEnemyDyingAttack(int x, int y, GameTexture dir, int texture) {
         BaseSprite sprite = getEnemyBullet(dir, texture);
-        sprite.setDipPosition(x, y);
+        sprite.setPosition(x, y);
         return sprite;
     }
 
