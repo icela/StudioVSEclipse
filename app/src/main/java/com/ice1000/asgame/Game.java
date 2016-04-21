@@ -24,29 +24,38 @@ import util.SpriteSelector;
 
 public class Game extends Engine {
 
-    private static final int AS = 0x000;
-    private static final int ASBullet = 0x001;
-    private static final int EC = 0x002;
-    private static final int ECBullet = 0x003;
-    private static final int FIRE = 200;
-    private static final int bulletSize = 20;
+    private static final int
+            AS = 0x000,
+            ASBullet = 0x001,
+            EC = 0x002,
+            ECBullet = 0x003,
+            FIRE = 200,
+            bulletSize = 20;
     private static final long ENEMY_FIRE = 600;
-    private static final String START = "START";
-    private static final String AS_SPRITE = "ASSprite";
-    private static final String BEST = "BEST";
-    private static final String RESTART = "RESTART";
+    private static final String
+            START = "START",
+            AS_SPRITE = "ASSprite",
+            BEST = "BEST",
+            RESTART = "RESTART";
     private static long ENEMY = 400;
-    private int score, level, best, textSize, textFromLeft, life;
+    private int
+            score,
+            level,
+            best,
+            textSize,
+            textFromLeft,
+            life;
     private SpriteSelector selector;
     private ASSprite asSprite;
-    private GameTimer fire, enemy, enemyFire;
+    private GameTimer
+            fire,
+            enemy,
+            enemyFire;
     private Random random;
     private TextButton restartButton;
-    private boolean isDied = false;
-    /**
-     * 这个拿来优化启动速度 不过好像没什么卵用
-     */
-    private boolean isButtonInitialized = false;
+    private boolean
+            isDied = false,
+            isButtonShown = false;
 
     public Game() {
         super(false);
@@ -63,6 +72,7 @@ public class Game extends Engine {
         setBackgroundColor(Color.BLACK);
         selector = new SpriteSelector(this);
         initData();
+        initButton();
         textSize = 30;
         textFromLeft = 50;
         best = (int) SpUtils.get(this, BEST, 0);
@@ -98,8 +108,9 @@ public class Game extends Engine {
         printer.drawText(
                 isDied ? "You die!" : ("life : " + life),
                 textFromLeft, textSize * ++column);
-        if (isDied) {
+        if (isDied && !isButtonShown) {
             addToButtonGroup(restartButton);
+            isButtonShown = true;
         }
     }
 
@@ -112,8 +123,6 @@ public class Game extends Engine {
         if (enemyFire.stopWatch(ENEMY_FIRE))
             addEnemyFire(90);
         if (isDied) {
-            if (!isButtonInitialized)
-                initButton();
             // 虽然我觉得这么做没什么卵用。。。但是还是这样好点
             if (getTouchMode() != TouchMode.BUTTON)
                 setTouchMode(TouchMode.BUTTON);
@@ -172,8 +181,9 @@ public class Game extends Engine {
                     }
                     life--;
                     baseSub.setAlive(false);
-                    if (life == 0)
+                    if (life == 0) {
                         isDied = true;
+                    }
                 }
                 break;
         }
@@ -310,7 +320,6 @@ public class Game extends Engine {
      * height: 40
      */
     private void initButton() {
-        isButtonInitialized = true;
         int w = 200, h = 40;
         restartButton = new TextButton(this, w, h, "restart");
         restartButton.setTextColor(Color.WHITE);
@@ -320,6 +329,7 @@ public class Game extends Engine {
             public void onClick() {
                 initData();
                 removeButtonFromGroup(RESTART);
+                isButtonShown = false;
             }
         });
         restartButton.setPosition(
