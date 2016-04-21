@@ -43,7 +43,9 @@ public class Game extends Engine {
     private Random random;
     private TextButton restartButton;
     private boolean isDied = false;
-    // 这个拿来优化启动速度 不过好像没什么卵用
+    /**
+     * 这个拿来优化启动速度 不过好像没什么卵用
+     */
     private boolean isButtonInitialized = false;
 
     public Game() {
@@ -112,10 +114,12 @@ public class Game extends Engine {
         if (isDied) {
             if (!isButtonInitialized)
                 initButton();
-
-            setTouchMode(TouchMode.BUTTON);
+            // 虽然我觉得这么做没什么卵用。。。但是还是这样好点
+            if (getTouchMode() != TouchMode.BUTTON)
+                setTouchMode(TouchMode.BUTTON);
         } else {
-            setTouchMode(TouchMode.SINGLE);
+            if (getTouchMode() != TouchMode.SINGLE)
+                setTouchMode(TouchMode.SINGLE);
             if (fire.stopWatch(FIRE))
                 fire();
         }
@@ -144,13 +148,17 @@ public class Game extends Engine {
                     removeFromSpriteGroup(baseSub.getOffender());
                     addToRecycleGroup(baseSub.getOffender());
                     score++;
-                    if (ENEMY > 100) ENEMY--;
+                    if (ENEMY > 200) ENEMY--;
                     if (score % 80 == 0 && score > 0)
                         level++;
                     // 死后天女散花，此时求玩家心理阴影面积
                     if (level > 5) {
-                        for (int i = 0; i < 360; i += 60 / (level - 5))
-                            addEnemyFire(i);
+                        for (int i = 0; i < 360; i += 60 / (level - 5)) {
+                            addToSpriteGroup(getEnemyDyingAttack(
+                                    (int) (baseSub.s_position.x),
+                                    (int) (baseSub.s_position.y),
+                                    selector.EC(), i));
+                        }
                     }
                 }
                 break;
@@ -164,9 +172,8 @@ public class Game extends Engine {
                     }
                     life--;
                     baseSub.setAlive(false);
-                    if (life == 0) {
+                    if (life == 0)
                         isDied = true;
-                    }
                 }
                 break;
         }
@@ -200,6 +207,22 @@ public class Game extends Engine {
         return bullet;
     }
 
+    /**
+     * another extension function.
+     *
+     * @param x       die pos.x
+     * @param y       die pos.y
+     * @param dir     direction
+     * @param texture using texture
+     * @return created dying attack
+     * @see #getEnemyBullet(GameTexture, double)
+     */
+    private BaseSprite getEnemyDyingAttack(int x, int y, GameTexture dir, int texture) {
+        BaseSprite sprite = getEnemyBullet(dir, texture);
+        sprite.setDipPosition(x, y);
+        return sprite;
+    }
+
     private void fire() {
         float x = asSprite.getPosition().x +
                 asSprite.getWidthWithScale() / 2 - bulletSize / 2;
@@ -221,16 +244,12 @@ public class Game extends Engine {
 
     private void addEnemy() {
         switch (level) {
-            // no break!!!
             default:
             case 4:
                 addToSpriteGroup(getEnemy(selector.EC3()));
-                addToSpriteGroup(getEnemy(selector.EC2()));
-                addToSpriteGroup(getEnemy(selector.EC()));
                 break;
             case 3:
                 addToSpriteGroup(getEnemy(selector.EC2()));
-                addToSpriteGroup(getEnemy(selector.EC()));
                 break;
             case 2:
                 addToSpriteGroup(getEnemy(selector.EC1()));
@@ -241,6 +260,11 @@ public class Game extends Engine {
         }
     }
 
+    /**
+     * 敌人发子弹的方法，我感觉没啥用，可能会删除
+     *
+     * @param dir direction
+     */
     private void addEnemyFire(double dir) {
         switch (level) {
             // no break!!!
