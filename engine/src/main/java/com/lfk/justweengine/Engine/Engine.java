@@ -52,6 +52,11 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
     private int e_touchNum;
     private int e_backgroundColor;
     private boolean e_isFrameOpen;
+
+    public TouchMode getTouchMode() {
+        return e_touch_Mode;
+    }
+
     //    private boolean isOpenDebug = false;
     private TouchMode e_touch_Mode;
     private CopyOnWriteArrayList<BaseSub> e_sprite_group;

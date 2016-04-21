@@ -28,7 +28,7 @@ public class Game extends Engine {
     private static final int ASBullet = 0x001;
     private static final int EC = 0x002;
     private static final int ECBullet = 0x003;
-    private static final int FIRE = 80;
+    private static final int FIRE = 200;
     private static final int bulletSize = 20;
     private static final long ENEMY_FIRE = 600;
     private static final String START = "START";
@@ -43,6 +43,8 @@ public class Game extends Engine {
     private Random random;
     private TextButton restartButton;
     private boolean isDied = false;
+    // 这个拿来优化启动速度 不过好像没什么卵用
+    private boolean isButtonInitialized = false;
 
     public Game() {
         super(false);
@@ -58,7 +60,6 @@ public class Game extends Engine {
         UIdefaultData.init(this);
         setBackgroundColor(Color.BLACK);
         selector = new SpriteSelector(this);
-        initButton();
         initData();
         textSize = 30;
         textFromLeft = 50;
@@ -109,6 +110,9 @@ public class Game extends Engine {
         if (enemyFire.stopWatch(ENEMY_FIRE))
             addEnemyFire(90);
         if (isDied) {
+            if (!isButtonInitialized)
+                initButton();
+
             setTouchMode(TouchMode.BUTTON);
         } else {
             setTouchMode(TouchMode.SINGLE);
@@ -143,8 +147,8 @@ public class Game extends Engine {
                     if (ENEMY > 100) ENEMY--;
                     if (score % 80 == 0 && score > 0)
                         level++;
-                    // 死后天女散花
-                    if(level > 5){
+                    // 死后天女散花，此时求玩家心理阴影面积
+                    if (level > 5) {
                         for (int i = 0; i < 360; i += 60 / (level - 5))
                             addEnemyFire(i);
                     }
@@ -154,15 +158,15 @@ public class Game extends Engine {
             case EC:
             case ECBullet:
                 if (baseSub.getOffender().getIdentifier() == AS) {
-                        if (score > best) {
-                                SpUtils.put(this, BEST, score);
-                                best = score;
-                        }
-                        life--;
-                        baseSub.setAlive(false);
-                        if (life == 0) {
-                                isDied = true;
-                        }
+                    if (score > best) {
+                        SpUtils.put(this, BEST, score);
+                        best = score;
+                    }
+                    life--;
+                    baseSub.setAlive(false);
+                    if (life == 0) {
+                        isDied = true;
+                    }
                 }
                 break;
         }
@@ -182,7 +186,7 @@ public class Game extends Engine {
      * actually an extension of getEnemy()
      *
      * @param texture the texture
-     * @param dir direction
+     * @param dir     direction
      * @return the enemy bullet
      * @see #getEnemy(GameTexture)
      */
@@ -221,12 +225,19 @@ public class Game extends Engine {
             default:
             case 4:
                 addToSpriteGroup(getEnemy(selector.EC3()));
+                addToSpriteGroup(getEnemy(selector.EC2()));
+                addToSpriteGroup(getEnemy(selector.EC()));
+                break;
             case 3:
                 addToSpriteGroup(getEnemy(selector.EC2()));
+                addToSpriteGroup(getEnemy(selector.EC()));
+                break;
             case 2:
                 addToSpriteGroup(getEnemy(selector.EC1()));
+                break;
             case 1:
                 addToSpriteGroup(getEnemy(selector.EC()));
+                break;
         }
     }
 
@@ -275,6 +286,7 @@ public class Game extends Engine {
      * height: 40
      */
     private void initButton() {
+        isButtonInitialized = true;
         int w = 200, h = 40;
         restartButton = new TextButton(this, w, h, "restart");
         restartButton.setTextColor(Color.WHITE);
