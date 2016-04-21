@@ -261,21 +261,21 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
-     * set texture
-     *
-     * @param s_texture
-     */
-    public void setTexture(GameTexture s_texture) {
-        this.s_texture = s_texture;
-    }
-
-    /**
      * get texture
      *
      * @return
      */
     public GameTexture getTexture() {
         return s_texture;
+    }
+
+    /**
+     * set texture
+     *
+     * @param s_texture
+     */
+    public void setTexture(GameTexture s_texture) {
+        this.s_texture = s_texture;
     }
 
     /**
@@ -310,15 +310,6 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
-     * set frame
-     *
-     * @param s_frame
-     */
-    public void setFrame(int s_frame) {
-        this.s_frame = s_frame;
-    }
-
-    /**
      * get frame
      *
      * @return
@@ -328,12 +319,12 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
-     * set alpha
+     * set frame
      *
-     * @param s_alpha
+     * @param s_frame
      */
-    public void setAlpha(int s_alpha) {
-        this.s_alpha = s_alpha;
+    public void setFrame(int s_frame) {
+        this.s_frame = s_frame;
     }
 
     /**
@@ -346,29 +337,21 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
+     * set alpha
+     *
+     * @param s_alpha
+     */
+    public void setAlpha(int s_alpha) {
+        this.s_alpha = s_alpha;
+    }
+
+    /**
      * get height
      *
      * @return
      */
     public int getHeight() {
         return s_height;
-    }
-
-    /**
-     * get width
-     *
-     * @return
-     */
-    public int getWidth() {
-        return s_width;
-    }
-
-    public int getWidthWithScale() {
-        return s_width * (int) s_scale.x;
-    }
-
-    public int getHeightWidthScale() {
-        return s_height * (int) s_scale.y;
     }
 
     /**
@@ -381,12 +364,29 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
+     * get width
+     *
+     * @return
+     */
+    public int getWidth() {
+        return s_width;
+    }
+
+    /**
      * set width
      *
      * @param w
      */
     public void setWidth(int w) {
         s_width = w;
+    }
+
+    public int getWidthWithScale() {
+        return s_width * (int) s_scale.x;
+    }
+
+    public int getHeightWidthScale() {
+        return s_height * (int) s_scale.y;
     }
 
     /**
@@ -407,6 +407,10 @@ public class BaseSprite extends BaseSub {
         return s_scale;
     }
 
+    public void setScale(float scale) {
+        s_scale = new Float2(scale, scale);
+    }
+
     /**
      * set scale
      *
@@ -414,10 +418,6 @@ public class BaseSprite extends BaseSub {
      */
     public void setScale(Float2 scale) {
         s_scale = scale;
-    }
-
-    public void setScale(float scale) {
-        s_scale = new Float2(scale, scale);
     }
 
     /**
@@ -443,21 +443,21 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
-     * is collided ?
-     *
-     * @return
-     */
-    public boolean isCollided() {
-        return s_collided;
-    }
-
-    /**
      * set collidable
      *
      * @param s_collidable
      */
     public void setCollidable(boolean s_collidable) {
         this.s_collidable = s_collidable;
+    }
+
+    /**
+     * is collided ?
+     *
+     * @return
+     */
+    public boolean isCollided() {
+        return s_collided;
     }
 
     /**
@@ -476,6 +476,16 @@ public class BaseSprite extends BaseSub {
      */
     public BaseSub getOffender() {
         return e_offender;
+    }
+
+    /**
+     * set offender
+     *
+     * @param e_offender
+     */
+    @Override
+    public void setOffender(BaseSub e_offender) {
+        this.e_offender = e_offender;
     }
 
     /**
@@ -514,16 +524,6 @@ public class BaseSprite extends BaseSub {
     public void replaceFixedAnimFromMap(String name, BaseAnim anim) {
         if (animMap != null && !animMap.isEmpty())
             animMap.replace(name, anim);
-    }
-
-    /**
-     * set offender
-     *
-     * @param e_offender
-     */
-    @Override
-    public void setOffender(BaseSub e_offender) {
-        this.e_offender = e_offender;
     }
 
     /**

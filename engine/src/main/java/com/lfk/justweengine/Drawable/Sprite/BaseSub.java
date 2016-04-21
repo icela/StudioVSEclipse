@@ -14,15 +14,17 @@ public abstract class BaseSub {
 
     public abstract boolean getAlive();
 
+    public abstract void setAlive(boolean s_alive);
+
     public abstract void draw();
 
     public abstract void animation();
 
     public abstract boolean isCollidable();
 
-    public abstract boolean isCollided();
-
     public abstract void setCollidable(boolean s_collidable);
+
+    public abstract boolean isCollided();
 
     public abstract void setCollided(boolean s_collided);
 
@@ -33,7 +35,5 @@ public abstract class BaseSub {
     public abstract RectF getBounds();
 
     public abstract int getIdentifier();
-
-    public abstract void setAlive(boolean s_alive);
 
 }
