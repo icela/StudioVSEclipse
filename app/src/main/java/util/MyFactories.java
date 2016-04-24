@@ -22,10 +22,10 @@ public class MyFactories {
         this.spriteSelector = spriteSelector;
         this.random = random;
         pools = new ObjectPool[]{
-                new ObjectPool(new GetEnemy(engine, 0), 20),
-                new ObjectPool(new GetEnemy(engine, 1), 20),
-                new ObjectPool(new GetEnemy(engine, 2), 20),
-                new ObjectPool(new GetEnemy(engine, 3), 20)
+                new ObjectPool(new GetEnemy(engine, 0), 10),
+                new ObjectPool(new GetEnemy(engine, 1), 10),
+                new ObjectPool(new GetEnemy(engine, 2), 10),
+                new ObjectPool(new GetEnemy(engine, 3), 10)
         };
     }
 
