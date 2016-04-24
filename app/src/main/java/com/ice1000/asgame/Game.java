@@ -189,9 +189,8 @@ public class Game extends Engine {
                     }
                     life--;
                     baseSub.setAlive(false);
-                    if (life == 0) {
+                    if (life == 0)
                         isDied = true;
-                    }
                 }
                 break;
         }
@@ -263,7 +262,7 @@ public class Game extends Engine {
     }
 
     private void addEnemy() {
-         addToSpriteGroup((BaseSub) pool[level < 4 ? level + 1 : 4].newObject());
+        addToSpriteGroup((BaseSub) pool[level < 4 ? level + 1 : 4].newObject());
     }
 
     /**
