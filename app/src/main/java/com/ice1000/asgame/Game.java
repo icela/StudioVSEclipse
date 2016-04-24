@@ -263,21 +263,7 @@ public class Game extends Engine {
     }
 
     private void addEnemy() {
-        switch (level) {
-            default:
-            case 4:
-                addToSpriteGroup((BaseSub) pool[SpriteSelector.EC3].newObject());
-                break;
-            case 3:
-                addToSpriteGroup((BaseSub) pool[SpriteSelector.EC2].newObject());
-                break;
-            case 2:
-                addToSpriteGroup((BaseSub) pool[SpriteSelector.EC1].newObject());
-                break;
-            case 1:
-                addToSpriteGroup((BaseSub) pool[SpriteSelector.EC].newObject());
-                break;
-        }
+         addToSpriteGroup((BaseSub) pool[level < 4 ? level + 1 : 4].newObject());
     }
 
     /**
