@@ -13,6 +13,7 @@ import com.lfk.justweengine.Engine.Engine;
 import com.lfk.justweengine.Engine.GameTextPrinter;
 import com.lfk.justweengine.Engine.GameTexture;
 import com.lfk.justweengine.Engine.GameTimer;
+import com.lfk.justweengine.Engine.ObjectPool;
 import com.lfk.justweengine.Engine.TouchMode;
 import com.lfk.justweengine.Info.UIdefaultData;
 import com.lfk.justweengine.Utils.tools.SpUtils;
@@ -57,6 +58,7 @@ public class Game extends Engine {
     private boolean
             isDied,
             isButtonShown;
+    private ObjectPool.publicObjectFactory[] factory;
 
     public Game() {
         super(false);
