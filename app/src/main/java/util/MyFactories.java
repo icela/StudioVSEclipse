@@ -14,22 +14,23 @@ import java.util.Random;
  *         Created by asus1 on 2016/4/24.
  */
 public class MyFactories {
-    private ObjectPool.publicObjectFactory[] factories;
+    private ObjectPool[] pools;
     private SpriteSelector spriteSelector;
     public Random random;
 
     public MyFactories(final Engine engine, SpriteSelector spriteSelector, Random random) {
         this.spriteSelector = spriteSelector;
         this.random = random;
-        this.factories = new ObjectPool.publicObjectFactory[]{
-                new GetEnemy(engine, 0),
-                new GetEnemy(engine, 1),
-                new GetEnemy(engine, 2),
-                new GetEnemy(engine, 3),
-                new GetEnemy(engine, 4),
-                new GetEnemy(engine, 5),
-                new GetEnemy(engine, 6)
+        pools = new ObjectPool[]{
+                new ObjectPool(new GetEnemy(engine, 0), 20),
+                new ObjectPool(new GetEnemy(engine, 1), 20),
+                new ObjectPool(new GetEnemy(engine, 2), 20),
+                new ObjectPool(new GetEnemy(engine, 3), 20)
         };
+    }
+
+    public ObjectPool[] getPools() {
+        return pools;
     }
 
     class GetEnemy implements ObjectPool.publicObjectFactory {
@@ -41,6 +42,12 @@ public class MyFactories {
             this.engine = engine;
             this.ecc = ecc;
         }
+
+        /**
+         * get enemy by texture
+         *
+         * @return an enemy
+         */
 
         @Override
         public Object createObject() {

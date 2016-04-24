@@ -13,6 +13,7 @@ import com.lfk.justweengine.Engine.Engine;
 import com.lfk.justweengine.Engine.GameTextPrinter;
 import com.lfk.justweengine.Engine.GameTexture;
 import com.lfk.justweengine.Engine.GameTimer;
+import com.lfk.justweengine.Engine.ObjectPool;
 import com.lfk.justweengine.Engine.TouchMode;
 import com.lfk.justweengine.Info.UIdefaultData;
 import com.lfk.justweengine.Utils.tools.SpUtils;
@@ -57,7 +58,7 @@ public class Game extends Engine {
     private boolean
             isDied,
             isButtonShown;
-    private MyFactories factorys;
+    private ObjectPool[] pool;
 
     public Game() {
         super(false);
@@ -75,10 +76,10 @@ public class Game extends Engine {
         selector = new SpriteSelector(this);
         initData();
         initButton();
-        factorys = new MyFactories(this, selector, random);
         textSize = 30;
         textFromLeft = 50;
         best = (int) SpUtils.get(this, BEST, 0);
+        pool = new MyFactories(this, selector, random).getPools();
     }
 
     @Override
@@ -169,7 +170,7 @@ public class Game extends Engine {
                             addToSpriteGroup(getEnemyDyingAttack(
                                     (int) (baseSub.s_position.x),
                                     (int) (baseSub.s_position.y),
-                                    selector.EC(), i));
+                                    SpriteSelector.EC, i));
                         }
                     }
                     if (level == 5 && !a) {
@@ -210,13 +211,13 @@ public class Game extends Engine {
     /**
      * actually an extension of getEnemy()
      *
-     * @param texture the texture
-     * @param dir     direction
+     * @param choice the choice
+     * @param dir    direction
      * @return the enemy bullet
-     * @see #getEnemy(GameTexture)
+     * @see SpriteSelector
      */
-    private BaseSprite getEnemyBullet(GameTexture texture, double dir) {
-        BaseSprite bullet = getEnemy(texture);
+    private BaseSprite getEnemyBullet(int choice, double dir) {
+        BaseSprite bullet = (BaseSprite) pool[choice].newObject();
         bullet.setIdentifier(ECBullet);
         bullet.setDipScale(8, 8);
         bullet.clearAllAnimation();
@@ -230,14 +231,14 @@ public class Game extends Engine {
      *
      * @param x       die pos.x
      * @param y       die pos.y
-     * @param dir     direction
+     * @param choice  representing the texture in Selector
      * @param texture using texture
      * @return created dying attack
-     * @see #getEnemyBullet(GameTexture, double)
+     * @see #getEnemyBullet(int, double)
      */
     private BaseSprite getEnemyDyingAttack(
-            int x, int y, GameTexture dir, int texture) {
-        BaseSprite sprite = getEnemyBullet(dir, texture);
+            int x, int y, int choice, int texture) {
+        BaseSprite sprite = getEnemyBullet(choice, texture);
         sprite.setPosition(x, y);
         return sprite;
     }
@@ -265,16 +266,16 @@ public class Game extends Engine {
         switch (level) {
             default:
             case 4:
-                addToSpriteGroup(getEnemy(selector.EC3()));
+                addToSpriteGroup((BaseSub) pool[SpriteSelector.EC3].newObject());
                 break;
             case 3:
-                addToSpriteGroup(getEnemy(selector.EC2()));
+                addToSpriteGroup((BaseSub) pool[SpriteSelector.EC2].newObject());
                 break;
             case 2:
-                addToSpriteGroup(getEnemy(selector.EC1()));
+                addToSpriteGroup((BaseSub) pool[SpriteSelector.EC1].newObject());
                 break;
             case 1:
-                addToSpriteGroup(getEnemy(selector.EC()));
+                addToSpriteGroup((BaseSub) pool[SpriteSelector.EC].newObject());
                 break;
         }
     }
@@ -290,38 +291,15 @@ public class Game extends Engine {
             default:
             case 6:
                 addToSpriteGroup(getEnemyBullet(
-                        selector.EC(), dir));
+                        SpriteSelector.EC, dir));
             case 5:
                 addToSpriteGroup(getEnemyBullet(
-                        selector.EC3(), dir));
+                        SpriteSelector.EC3, dir));
             case 4:
             case 3:
             case 2:
             case 1:
         }
-    }
-
-    /**
-     * get enemy by texture
-     *
-     * @param texture the texture
-     * @return an enemy
-     */
-    private BaseSprite getEnemy(GameTexture texture) {
-        BaseSprite enemy;
-        enemy = new BaseSprite(this);
-        enemy.setTexture(texture);
-        enemy.setIdentifier(EC);
-//        enemy.setDipScale(80, 80);
-        enemy.addAnimation(new VelocityAnimation(
-                90, 30, 5000
-        ));
-        enemy.setPosition(
-                random.nextInt(UIdefaultData.screenWidth),
-                -enemy.getHeightWidthScale()
-        );
-        enemy.setAlive(true);
-        return enemy;
     }
 
     /**
