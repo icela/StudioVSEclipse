@@ -13,7 +13,6 @@ import com.lfk.justweengine.Engine.Engine;
 import com.lfk.justweengine.Engine.GameTextPrinter;
 import com.lfk.justweengine.Engine.GameTexture;
 import com.lfk.justweengine.Engine.GameTimer;
-import com.lfk.justweengine.Engine.ObjectPool;
 import com.lfk.justweengine.Engine.TouchMode;
 import com.lfk.justweengine.Info.UIdefaultData;
 import com.lfk.justweengine.Utils.tools.SpUtils;
@@ -21,19 +20,19 @@ import com.lfk.justweengine.Utils.tools.SpUtils;
 import java.util.Random;
 
 import util.ASSprite;
+import util.MyFactories;
 import util.SpriteSelector;
 
 public class Game extends Engine {
 
-    private static final int
-            AS = 0x000,
-            ASBullet = 0x001,
-            EC = 0x002,
-            ECBullet = 0x003,
-            FIRE = 200,
-            bulletSize = 20;
-    private static final long ENEMY_FIRE = 1000;
-    private static final String
+    public static final int AS = 0x000;
+    public static final int ASBullet = 0x001;
+    public static final int EC = 0x002;
+    public static final int ECBullet = 0x003;
+    public static final int FIRE = 200;
+    public static final int bulletSize = 20;
+    public static final long ENEMY_FIRE = 1000;
+    public static final String
             START = "START",
             AS_SPRITE = "ASSprite",
             BEST = "BEST",
@@ -58,7 +57,7 @@ public class Game extends Engine {
     private boolean
             isDied,
             isButtonShown;
-    private ObjectPool.publicObjectFactory[] factory;
+    private MyFactories factorys;
 
     public Game() {
         super(false);
