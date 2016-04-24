@@ -10,12 +10,21 @@ import com.lfk.justweengine.Engine.GameTexture;
  */
 public class SpriteSelector {
 
-//    private static final String FILENAME = "pic/new.jpg";
+    //    private static final String FILENAME = "pic/new.jpg";
     private GameTexture IntelliJ_IDEA,
             Android_Studio, PyCharm, RubyMine,
             Eclipse, Eclipse1, Eclipse2, Eclipse3;
 //    private GameTexture ReSharper;
 //    private GameTexture CLion;
+
+    public static final int EC = 0;
+    public static final int EC1 = 1;
+    public static final int EC2 = 2;
+    public static final int EC3 = 3;
+    public static final int IJ = 4;
+    public static final int RM = 5;
+    public static final int PC = 6;
+    public static final int AS = -1;
 
     public SpriteSelector(Context engine) {
         PyCharm = new GameTexture(engine);
@@ -47,6 +56,10 @@ public class SpriteSelector {
         Eclipse3.loadFromAsset("pic/ec3.png");
     }
 
+    public GameTexture AS() {
+        return Android_Studio;
+    }
+
     public GameTexture IJ() {
         return IntelliJ_IDEA;
     }
@@ -57,10 +70,6 @@ public class SpriteSelector {
 
     public GameTexture RM() {
         return RubyMine;
-    }
-
-    public GameTexture AS() {
-        return Android_Studio;
     }
 
     public GameTexture EC() {
@@ -79,6 +88,27 @@ public class SpriteSelector {
         return Eclipse3;
     }
 
+    public GameTexture getByCount(int c) {
+        switch (c) {
+            case EC:
+                return EC();
+            case EC1:
+                return EC1();
+            case EC2:
+                return EC2();
+            case EC3:
+                return EC3();
+            case IJ:
+                return IJ();
+            case RM:
+                return RM();
+            case PC:
+                return PC();
+            case AS:
+            default:
+                return AS();
+        }
+    }
 }
 //    Random random = new Random();
 //        switch (random.nextInt(3)){

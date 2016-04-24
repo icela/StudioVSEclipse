@@ -75,6 +75,7 @@ public class Game extends Engine {
         selector = new SpriteSelector(this);
         initData();
         initButton();
+        factorys = new MyFactories(this, selector, random);
         textSize = 30;
         textFromLeft = 50;
         best = (int) SpUtils.get(this, BEST, 0);
