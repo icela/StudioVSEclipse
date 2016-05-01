@@ -2,9 +2,8 @@ package com.lfk.justweengine.Engine;
 
 /**
  * 计时器
- * <p/>
- * 控制帧数\节律
  *
+ * 控制帧数\节律
  * @author liufengkai
  *         Created by liufengkai on 15/11/27.
  */

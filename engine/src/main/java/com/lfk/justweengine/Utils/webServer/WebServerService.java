@@ -12,6 +12,8 @@ import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.lfk.justweengine.R;
+
 
 /**
  * WebServerService for Android
@@ -64,7 +66,7 @@ public class WebServerService extends Service {
                 .setContentTitle("WebServer")
                 .setContentText(text)
                 .setContentIntent(contentIntent)
-                .setSmallIcon(getApplication().getApplicationInfo().icon)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setWhen(System.currentTimeMillis());
         notification = builder.getNotification();
         notificationManager.notify(0, notification);

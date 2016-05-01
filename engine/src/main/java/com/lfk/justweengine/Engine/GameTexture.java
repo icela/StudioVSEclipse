@@ -24,20 +24,11 @@ public class GameTexture {
         this.gameIO = new GameIO(e_context);
     }
 
-    public GameTexture(Bitmap e_bitmap) {
-        this.e_bitmap = e_bitmap;
-    }
-
-    public static Bitmap loadFromBigBitmap(GameTexture texture, int x, int y
-            , int w, int h) {
-        return Bitmap.createBitmap(texture.getBitmap(), x, y, w, h);
-    }
-
     public Bitmap getBitmap() {
         return e_bitmap;
     }
 
-    public void setBitmap(Bitmap e_bitmap) {
+    public GameTexture(Bitmap e_bitmap) {
         this.e_bitmap = e_bitmap;
     }
 
@@ -90,9 +81,17 @@ public class GameTexture {
         return true;
     }
 
+    public static Bitmap loadFromBigBitmap(GameTexture texture, int x, int y
+            , int w, int h) {
+        return Bitmap.createBitmap(texture.getBitmap(), x, y, w, h);
+    }
+
+    public void setBitmap(Bitmap e_bitmap) {
+        this.e_bitmap = e_bitmap;
+    }
+
     /**
      * 从大图取出小图
-     *
      * @param x 横轴
      * @param y 纵轴
      * @param w 宽

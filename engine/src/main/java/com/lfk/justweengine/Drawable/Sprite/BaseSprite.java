@@ -1,6 +1,9 @@
 package com.lfk.justweengine.Drawable.Sprite;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -25,8 +28,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *         Created by liufengkai on 15/11/27.
  */
 public class BaseSprite extends BaseSub {
-    // 名称
-    private String s_name;
     // 死或生
     private boolean s_alive;
     // 是否可碰撞 / 是否检测过
@@ -34,15 +35,11 @@ public class BaseSprite extends BaseSub {
     private BaseSub e_offender;
     private int e_identifier;
     private FrameType frameType;
-    // 传入的engine
-    private Engine s_engine;
     private Canvas s_canvas;
     // 图片
     private GameTexture s_texture;
     // 画笔
     private Paint s_paint;
-    // 位置 以左上角为准
-//    public Float2 s_position;
     // 宽度高度
     private int s_width, s_height;
     // 帧动画的列
@@ -64,6 +61,9 @@ public class BaseSprite extends BaseSub {
     private LinkedList<Rect> s_frame_rect;
     private Rect s_dst;
     private Rect src;
+    private Matrix s_matrix, s_mat_scale, s_mat_rotate, s_mat_translation;
+    private Bitmap s_frameBitmap;
+    private Canvas s_frameCanvas;
 
     /**
      * easy init
@@ -138,12 +138,12 @@ public class BaseSprite extends BaseSub {
 
         s_dst = new Rect();
         src = new Rect();
-//        s_mat_translation = new Matrix();
-//        s_mat_scale = new Matrix();
-//        s_mat_rotate = new Matrix();
-//        s_matrix = new Matrix();
-//        s_frameBitmap = null;
-//        s_frameCanvas = null;
+
+        s_mat_translation = new Matrix();
+        s_mat_scale = new Matrix();
+        s_mat_rotate = new Matrix();
+        s_matrix = new Matrix();
+
         s_paint.setColor(UIdefaultData.sprite_default_color_paint);
     }
 
@@ -160,11 +160,11 @@ public class BaseSprite extends BaseSub {
             s_width = s_texture.getBitmap().getWidth();
             s_height = s_texture.getBitmap().getHeight();
         }
-//        // scratch bitmap
-//        if (s_frameBitmap == null) {
-//            s_frameBitmap = Bitmap.createBitmap(s_width, s_height, Bitmap.Config.ARGB_8888);
-//            s_frameCanvas = new Canvas(s_frameBitmap);
-//        }
+        // scratch bitmap
+        if (s_frameBitmap == null) {
+            s_frameBitmap = Bitmap.createBitmap(s_width, s_height, Bitmap.Config.ARGB_8888);
+            s_frameCanvas = new Canvas(s_frameBitmap);
+        }
 
         // calculate w/h in each frame
         int u = (s_frame % s_columns) * s_width;
@@ -172,35 +172,31 @@ public class BaseSprite extends BaseSub {
 
         // set rect
         src.set(u, v, u + s_width, v + s_height);
-
         // scale
-        int x = (int) s_position.x;
-        int y = (int) s_position.y;
         int w = (int) (s_width * s_scale.x);
         int h = (int) (s_height * s_scale.y);
-
-        s_dst.set(x, y, x + w, y + h);
-
+        s_dst.set(0, 0, w, h);
         // draw the frame
         s_paint.setAlpha(s_alpha);
-        s_canvas.drawBitmap(s_texture.getBitmap(), src, s_dst, s_paint);
+        s_frameBitmap.eraseColor(Color.TRANSPARENT);
 
+        s_frameCanvas.drawBitmap(s_texture.getBitmap(), src, s_dst, s_paint);
+
+        s_matrix.reset();
+
+        s_mat_scale.reset();
+        s_mat_rotate.reset();
+        s_mat_translation.reset();
+
+        s_mat_scale.setScale(s_scale.x, s_scale.y);
+        s_mat_rotate.setRotate((float) Math.toDegrees(s_rotation));
+        s_mat_translation.setTranslate(s_position.x, s_position.y);
+
+        s_matrix.postConcat(s_mat_scale);
+        s_matrix.postConcat(s_mat_rotate);
+        s_matrix.postConcat(s_mat_translation);
         // update transform
-//        s_mat_scale = new Matrix();
-//        s_mat_scale.setScale(s_scale.x, s_scale.y);
-//
-//        s_mat_rotate = new Matrix();
-//        s_mat_rotate.setRotate((float) Math.toDegrees(s_rotation));
-//
-//        s_mat_translation = new Matrix();
-//        s_mat_translation.setTranslate(s_position.x, s_position.y);
-//
-//        s_matrix = new Matrix(); //set to identity
-//        s_matrix.postConcat(s_mat_scale);
-//        s_matrix.postConcat(s_mat_rotate);
-//        s_matrix.postConcat(s_mat_translation);
-
-//        s_canvas.drawBitmap(s_frameBitmap, s_matrix, s_paint);
+        s_canvas.drawBitmap(s_frameBitmap, s_matrix, s_paint);
     }
 
     /**
@@ -261,21 +257,21 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
-     * get texture
-     *
-     * @return
-     */
-    public GameTexture getTexture() {
-        return s_texture;
-    }
-
-    /**
      * set texture
      *
      * @param s_texture
      */
     public void setTexture(GameTexture s_texture) {
         this.s_texture = s_texture;
+    }
+
+    /**
+     * get texture
+     *
+     * @return
+     */
+    public GameTexture getTexture() {
+        return s_texture;
     }
 
     /**
@@ -310,15 +306,6 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
-     * get frame
-     *
-     * @return
-     */
-    public int getFrame() {
-        return s_frame;
-    }
-
-    /**
      * set frame
      *
      * @param s_frame
@@ -328,12 +315,12 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
-     * get alpha
+     * get frame
      *
      * @return
      */
-    public int getAlpha() {
-        return s_alpha;
+    public int getFrame() {
+        return s_frame;
     }
 
     /**
@@ -346,12 +333,38 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
+     * get alpha
+     *
+     * @return
+     */
+    public int getAlpha() {
+        return s_alpha;
+    }
+
+    /**
      * get height
      *
      * @return
      */
     public int getHeight() {
         return s_height;
+    }
+
+    /**
+     * get width
+     *
+     * @return
+     */
+    public int getWidth() {
+        return s_width;
+    }
+
+    public int getWidthWithScale() {
+        return s_width * (int) s_scale.x;
+    }
+
+    public int getHeightWidthScale() {
+        return s_height * (int) s_scale.y;
     }
 
     /**
@@ -364,29 +377,12 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
-     * get width
-     *
-     * @return
-     */
-    public int getWidth() {
-        return s_width;
-    }
-
-    /**
      * set width
      *
      * @param w
      */
     public void setWidth(int w) {
         s_width = w;
-    }
-
-    public int getWidthWithScale() {
-        return s_width * (int) s_scale.x;
-    }
-
-    public int getHeightWidthScale() {
-        return s_height * (int) s_scale.y;
     }
 
     /**
@@ -407,10 +403,6 @@ public class BaseSprite extends BaseSub {
         return s_scale;
     }
 
-    public void setScale(float scale) {
-        s_scale = new Float2(scale, scale);
-    }
-
     /**
      * set scale
      *
@@ -418,6 +410,10 @@ public class BaseSprite extends BaseSub {
      */
     public void setScale(Float2 scale) {
         s_scale = scale;
+    }
+
+    public void setScale(float scale) {
+        s_scale = new Float2(scale, scale);
     }
 
     /**
@@ -443,21 +439,21 @@ public class BaseSprite extends BaseSub {
     }
 
     /**
-     * set collidable
-     *
-     * @param s_collidable
-     */
-    public void setCollidable(boolean s_collidable) {
-        this.s_collidable = s_collidable;
-    }
-
-    /**
      * is collided ?
      *
      * @return
      */
     public boolean isCollided() {
         return s_collided;
+    }
+
+    /**
+     * set collidable
+     *
+     * @param s_collidable
+     */
+    public void setCollidable(boolean s_collidable) {
+        this.s_collidable = s_collidable;
     }
 
     /**
@@ -476,16 +472,6 @@ public class BaseSprite extends BaseSub {
      */
     public BaseSub getOffender() {
         return e_offender;
-    }
-
-    /**
-     * set offender
-     *
-     * @param e_offender
-     */
-    @Override
-    public void setOffender(BaseSub e_offender) {
-        this.e_offender = e_offender;
     }
 
     /**
@@ -524,6 +510,16 @@ public class BaseSprite extends BaseSub {
     public void replaceFixedAnimFromMap(String name, BaseAnim anim) {
         if (animMap != null && !animMap.isEmpty())
             animMap.replace(name, anim);
+    }
+
+    /**
+     * set offender
+     *
+     * @param e_offender
+     */
+    @Override
+    public void setOffender(BaseSub e_offender) {
+        this.e_offender = e_offender;
     }
 
     /**

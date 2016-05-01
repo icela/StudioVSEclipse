@@ -52,6 +52,11 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
     private int e_touchNum;
     private int e_backgroundColor;
     private boolean e_isFrameOpen;
+
+    public TouchMode getTouchMode() {
+        return e_touch_Mode;
+    }
+
     //    private boolean isOpenDebug = false;
     private TouchMode e_touch_Mode;
     private CopyOnWriteArrayList<BaseSub> e_sprite_group;
@@ -79,14 +84,6 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
             Logger.init();
         }
         Engine();
-    }
-
-    public TouchMode getTouchMode() {
-        return e_touch_Mode;
-    }
-
-    public void setTouchMode(TouchMode e_touch_Mode) {
-        this.e_touch_Mode = e_touch_Mode;
     }
 
     private void Engine() {
@@ -139,7 +136,7 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
         // disable title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // default landscape
-        setScreenOrientation(ScreenMode.LANDSCAPE);
+//        setScreenOrientation(ScreenMode.LANDSCAPE);
 
         init();
 
@@ -257,14 +254,16 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
             // update
             update();
 
-            for (BaseSub A : e_sprite_group) {
+            for (int i = 0; i < e_sprite_group.size(); i++) {
+                BaseSub A = e_sprite_group.get(i);
                 if (!A.getAlive()) continue;
 
                 if (!A.isCollidable()) continue;
 
                 if (A.isCollided()) continue;
 
-                for (BaseSub B : e_sprite_group) {
+                for (int j = 0; i < e_sprite_group.size(); j++) {
+                    BaseSub B = e_sprite_group.get(j);
                     if (!B.getAlive()) continue;
 
                     if (!B.isCollidable()) continue;
@@ -301,7 +300,8 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
                 draw();
 
 
-                for (BaseSub baseSub : e_sprite_group) {
+                for (int k = 0; k < e_sprite_group.size(); k++) {
+                    BaseSub baseSub = e_sprite_group.get(k);
                     if (baseSub.getAlive()) {
                         baseSub.animation();
                         baseSub.draw();
@@ -325,7 +325,8 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
             }
 
             // new collision
-            for (BaseSub baseSub : e_sprite_group) {
+            for (int l = 0; l < e_sprite_group.size(); l++) {
+                BaseSub baseSub = e_sprite_group.get(l);
                 if (!baseSub.getAlive()) {
                     e_sprite_recycle_group.add(baseSub);
                     e_sprite_group.remove(baseSub);
@@ -418,6 +419,16 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
      */
     public void setTouchModesAble(boolean e_touchModesAble) {
         this.e_touchModesAble = e_touchModesAble;
+    }
+
+    public enum ScreenMode {
+        LANDSCAPE(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE),
+        PORTRAIT(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        int value;
+
+        ScreenMode(int mode) {
+            this.value = mode;
+        }
     }
 
     /**
@@ -539,6 +550,18 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
         e_paintFont.setTextSize((int) size);
     }
 
+    public enum FontStyles {
+        NORMAL(Typeface.NORMAL),
+        BOLD(Typeface.BOLD),
+        ITALIC(Typeface.ITALIC),
+        BOLD_ITALIC(Typeface.BOLD_ITALIC),;
+        int value;
+
+        FontStyles(int value) {
+            this.value = value;
+        }
+    }
+
     /**
      * set type face
      *
@@ -623,7 +646,7 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
      *
      * @param sprite
      */
-    protected void addToSpriteGroup(BaseSub sprite) {
+    public void addToSpriteGroup(BaseSub sprite) {
         e_sprite_group.add(sprite);
     }
 
@@ -749,25 +772,7 @@ public abstract class Engine extends Activity implements Runnable, View.OnTouchL
         e_hit_button = null;
     }
 
-    public enum ScreenMode {
-        LANDSCAPE(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE),
-        PORTRAIT(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        int value;
-
-        ScreenMode(int mode) {
-            this.value = mode;
-        }
-    }
-
-    public enum FontStyles {
-        NORMAL(Typeface.NORMAL),
-        BOLD(Typeface.BOLD),
-        ITALIC(Typeface.ITALIC),
-        BOLD_ITALIC(Typeface.BOLD_ITALIC),;
-        int value;
-
-        FontStyles(int value) {
-            this.value = value;
-        }
+    public void setTouchMode(TouchMode e_touch_Mode) {
+        this.e_touch_Mode = e_touch_Mode;
     }
 }

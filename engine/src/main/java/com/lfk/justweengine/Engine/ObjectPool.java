@@ -11,10 +11,7 @@ import java.util.List;
  *         Created by liufengkai on 16/1/17.
  */
 public class ObjectPool<T> {
-
-    private final List<T> freeObjects;
-    private final publicObjectFactory<T> factory;
-    private final int maxSize;
+    public String poolName = null;
 
     public ObjectPool(publicObjectFactory<T> factory, int maxSize) {
         this.freeObjects = new ArrayList<>(maxSize);
@@ -22,13 +19,23 @@ public class ObjectPool<T> {
         this.maxSize = maxSize;
     }
 
+    public interface publicObjectFactory<T> {
+        T createObject();
+    }
+
+    protected final List<T> freeObjects;
+
+    protected final publicObjectFactory<T> factory;
+
+    private final int maxSize;
+
     /**
      * 新建对象
      *
      * @return object
      */
     public T newObject() {
-        T object = null;
+        T object;
         if (freeObjects.size() == 0) {
             object = factory.createObject();
         } else
@@ -46,6 +53,14 @@ public class ObjectPool<T> {
             freeObjects.add(object);
     }
 
+    public T remove() {
+        return freeObjects.remove(freeObjects.size() - 1);
+    }
+
+    public int size() {
+        return freeObjects.size();
+    }
+
     /**
      * 完全释放
      */
@@ -53,8 +68,10 @@ public class ObjectPool<T> {
         freeObjects.clear();
     }
 
-    public interface publicObjectFactory<T> {
-        T createObject();
+    public static <T> ObjectPool<T> newInstance(Class<T> clazz, publicObjectFactory<T> factory, int maxSize) {
+        ObjectPool<T> pool;
+        pool = new ObjectPool<>(factory, maxSize);
+        pool.poolName = clazz.getName();
+        return pool;
     }
-
 }
