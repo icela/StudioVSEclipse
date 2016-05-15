@@ -1,6 +1,7 @@
 package com.ice1000.asgame;
 
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.view.MotionEvent;
 
 import com.lfk.justweengine.Anim.VelocityAnimation;
@@ -9,11 +10,11 @@ import com.lfk.justweengine.Drawable.Button.OnClickListener;
 import com.lfk.justweengine.Drawable.Button.TextButton;
 import com.lfk.justweengine.Drawable.Sprite.BaseSprite;
 import com.lfk.justweengine.Drawable.Sprite.BaseSub;
-import com.lfk.justweengine.Engine.Engine;
 import com.lfk.justweengine.Engine.GameTextPrinter;
 import com.lfk.justweengine.Engine.GameTexture;
 import com.lfk.justweengine.Engine.GameTimer;
 import com.lfk.justweengine.Engine.ObjectPool;
+import com.lfk.justweengine.Engine.SimpleEngine;
 import com.lfk.justweengine.Engine.TouchMode;
 import com.lfk.justweengine.Info.UIdefaultData;
 import com.lfk.justweengine.Utils.tools.SpUtils;
@@ -24,7 +25,7 @@ import util.ASSprite;
 import util.MyFactories;
 import util.SpriteSelector;
 
-public class Game extends Engine {
+public class Game extends SimpleEngine {
 
     public static final int AS = 0x000;
     public static final int ASBullet = 0x001;
@@ -333,5 +334,10 @@ public class Game extends Engine {
         bullet.setPosition(x, y);
         bullet.setAlive(true);
         return bullet;
+    }
+
+    @Override
+    public void debugDraw(RectF bound) {
+        //
     }
 }
