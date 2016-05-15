@@ -111,6 +111,7 @@ public class Game extends SimpleEngine {
                 textFromLeft, textSize * ++column);
         if (isDied && !isButtonShown) {
             // TODO: go to restart activity.
+            finish();
             isButtonShown = true;
         }
     }
