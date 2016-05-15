@@ -5,9 +5,6 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 
 import com.lfk.justweengine.Anim.VelocityAnimation;
-import com.lfk.justweengine.Drawable.Button.ColorAnimation;
-import com.lfk.justweengine.Drawable.Button.OnClickListener;
-import com.lfk.justweengine.Drawable.Button.TextButton;
 import com.lfk.justweengine.Drawable.Sprite.BaseSprite;
 import com.lfk.justweengine.Drawable.Sprite.BaseSub;
 import com.lfk.justweengine.Engine.GameTextPrinter;
@@ -55,7 +52,6 @@ public class Game extends SimpleEngine {
             enemy,
             enemyFire;
     private Random random;
-    private TextButton restartButton;
     private boolean
             isDied,
             isButtonShown;
@@ -76,7 +72,7 @@ public class Game extends SimpleEngine {
         setBackgroundColor(Color.BLACK);
         selector = new SpriteSelector(this);
         initData();
-        initButton();
+//        initButton();
         textSize = 30;
         textFromLeft = 50;
         best = (int) SpUtils.get(this, BEST, 0);
@@ -114,7 +110,7 @@ public class Game extends SimpleEngine {
                 isDied ? "You die!" : ("life : " + life),
                 textFromLeft, textSize * ++column);
         if (isDied && !isButtonShown) {
-            addToButtonGroup(restartButton);
+            // TODO: go to restart activity.
             isButtonShown = true;
         }
     }
@@ -288,34 +284,31 @@ public class Game extends SimpleEngine {
         }
     }
 
-    /**
-     * width: 200
-     * height: 40
-     */
-    private void initButton() {
-        int w = 200, h = 40;
-        restartButton = new TextButton(this, w, h, "restart");
-        restartButton.setText("restart");
-        restartButton.setTextColor(getResources().getColor(R.color.button_p));
-        restartButton.setButtonColor(getResources().getColor(R.color.button_n));
-        restartButton.setZoomCenter(true);
-        restartButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick() {
-                initData();
-                removeButtonFromGroup(RESTART);
-            }
-        });
-        restartButton.setPosition(
-                (UIdefaultData.screenWidth - w) / 2,
-                // 中间再下移 1/8 个屏幕
-                (UIdefaultData.screenHeight - h) / 2 +
-                        UIdefaultData.screenHeight / 8
-        );
-        restartButton.setAnimation(new ColorAnimation(
-                getResources().getColor(R.color.button_n),
-                getResources().getColor(R.color.button_p)));
-    }
+//    /**
+//     * width: 200
+//     * height: 40
+//     */
+//    private void initButton() {
+//        int w = 200, h = 40;
+//        restartButton = new TextButton(this, w, h, "restart");
+//        restartButton.setText("restart");
+//        restartButton.setTextColor(getResources().getColor(R.color.button_p));
+//        restartButton.setButtonColor(getResources().getColor(R.color.button_n));
+//        restartButton.setZoomCenter(true);
+//        restartButton.setOnClickListener((OnClickListener) () -> {
+//            initData();
+//            removeButtonFromGroup(RESTART);
+//        });
+//        restartButton.setPosition(
+//                (UIdefaultData.screenWidth - w) / 2,
+//                // 中间再下移 1/8 个屏幕
+//                (UIdefaultData.screenHeight - h) / 2 +
+//                        UIdefaultData.screenHeight / 8
+//        );
+//        restartButton.setAnimation(new ColorAnimation(
+//                getResources().getColor(R.color.button_n),
+//                getResources().getColor(R.color.button_p)));
+//    }
 
     /**
      * size = bulletSize * bulletSize
