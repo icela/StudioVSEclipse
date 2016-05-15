@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Studio VS Eclipse</string>
+    <string name="game_start">开始游戏</string>
 </resources>
