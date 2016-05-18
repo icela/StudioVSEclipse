@@ -1,9 +1,10 @@
 # StudioVSEclipse
 AndroidStudio 大战 Eclipse 打飞机游戏 :joy:
 
-#### Powered by [JustWeEngine](https://github.com/lfkdsk/JustWeEngine)
+# warning:
+目前有个开启时极慢无比的bug，冰封正在努力调试中。。。 :joy:
 
-## 鸣谢
+#### Powered by [JustWeEngine](https://github.com/lfkdsk/JustWeEngine)
 感谢[刘丰恺](https://github.com/lfkdsk)学长的指点<br/>
 
 ## 简介
