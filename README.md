@@ -13,8 +13,8 @@ AndroidStudio 大战 Eclipse 打飞机游戏 :joy:
 ![](./app/src/main/assets/pic/as.png)
 
 ## 安装
-见 Release 界面。
 
+下载 [安装包](./app/app-release.apk)
 
 ## 操作
 1. AndroidStudio会和你的手指同步位移，而不是跟随你的手指，这样你可以将它任意移动。
